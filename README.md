@@ -24,7 +24,9 @@ Hierdurch wird die Datei `package.json` erzeugt, welche ins Repository aufgenomm
     git add package.json
     git commit -m 'initialized package'
 
-## Mustache-Package installieren
+## Engine 1: Mustache
+
+### Mustache-Package installieren
 
 Weiter wird die [Mustache](https://github.com/janl/mustache.js#include-templates)-Library installiert:
 
@@ -50,7 +52,7 @@ Auch diese Datei wird ins Repository aufgenommen:
     git add .gitignore
     git commit -m 'ignore node_modules folder'
 
-## Template erstellen
+### Template erstellen
 
 Nun erstellen wir das erste Mustache-Template im Unterverzeichnis `templates/`.
 Wir nennen die Datei `hello-world.html`, und sie hat folgenden Inhalt:
@@ -82,7 +84,7 @@ Das Template wird in das Git-Repository aufgenommen:
     git add templates
     git commi -m 'added first template'
 
-## Template rendern
+### Template rendern
 
 Nun wird der JavaScript-Code geschrieben, der das Template verwendet. Hierzu
 erstellen wir die Datei `hello-world.js` im Unterverzeichnis `src/` mit
@@ -132,3 +134,101 @@ Selbstversändlich wird der Code ins Git-Repository aufgenommen:
 
     git add src/hello-world.js
     git commit -m 'first template rendering code'
+
+## Engine 2: Nunjucks
+
+Mustache-Templates erlauben keine Logik wie z.B. `if`/`else`-Verzweigungen oder
+`for`-Loops. Hierzu gibt es andere Libraries wie z.B.
+[Nunjucks](https://mozilla.github.io/nunjucks/).
+
+Diese soll in einem erweiterten Beispiel ausprobiert werden.
+
+Zunächst installieren wir die Nunjucks-Library:
+
+    npm install nunjucks --save
+
+Da wir den Code im zweiten Beispiel nicht einfach nur auf das Terminal ausgeben wollen, installieren wir die Express.js-Library:
+
+    npm install express --save
+
+Die Änderungen der beiden `package`-Dateien werden wiederum ins Repository übernommen:
+
+    git add package-lock.json package.json
+    git commit -m 'installed nunjucks and Express.js library'
+
+Im `templates/`-Verzeichnis wird ein neues Template namens `employees.html`
+angelegt:
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello, World!</title>
+    </head>
+    <body>
+        <h1>Employees of {{ company }}</h1>
+        <ol>
+            {% for employee in employees %}
+            <li>{{ employee.firstName }} {{ employee.lastName }}</li>
+                {% if employee.position %}
+                <ul>
+                    <li>{{ employee.position }}</li>
+                </ul>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </body>
+</html>
+```
+
+Im `src/`-Verzeichnis wird in der Datei `employees.js` die Logik zu Rendern des
+Templates angelegt. Hierbei handelt es sich um eine ausführbare
+Express.js-Anwendung:
+
+```javascript
+const express = require('express');
+const nunjucks = require('nunjucks');
+
+const app = express();
+const port = 8000;
+
+nunjucks.configure('templates', {
+    autoescape: true,
+    express: app
+});
+
+const employees = [
+    {firstName: "Alice", lastName: "Bobson", position: "Engineer"},
+    {firstName: "Charles", lastName: "Daniels"},
+    {firstName: "Erica", lastName: "Freeman"},
+    {firstName: "Gustav", lastName: "Heinlein", position: "Manager"}
+];
+
+app.get('/', (req, res) => {
+    const data = {
+        company: 'Frickelbude',
+        employees: employees
+    }
+    res.render('employees.html', data);
+});
+
+app.listen(port, () => {
+    console.log(`Employees app listening on port ${port}.`);
+});
+```
+
+Die beiden Dateien werden ins Git-Repository übernommen:
+
+    git add templates/employees.html src/employees.js
+    git commit -m 'implemented nunjucks example with Express.js'
+
+Die Anwendung wird mit `node` ausgeführt:
+
+    node src/employees.js
+    Employees app listening on port 8000.
+
+Im Browser kann das gerenderte Template nun unter der Adresse
+[localhost:8000](http://localhost:8000/) betrachtet werden:
+
+![employees.png](screenshots/employees.png)
