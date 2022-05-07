@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello, World!</title>
+    </head>
+    <body>
+        <h1>Employees of {{ company }}</h1>
+        <ol>
+            {% for employee in employees %}
+            <li>{{ employee.firstName }} {{ employee.lastName }}</li>
+                {% if employee.position %}
+                <ul>
+                    <li>{{ employee.position }}</li>
+                </ul>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </body>
+</html>
