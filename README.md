@@ -182,6 +182,12 @@ angelegt:
 </html>
 ```
 
+In doppelten geschweiften Klammern werden Werte (z.B. Variablen) ausgegeben.
+Mithilfe des Codes innerhalb von `{% ... %}` können Entscheidungen und Schleifen
+implementiert werden. Konsultieren Sie die
+[Dokumentation](https://mozilla.github.io/nunjucks/templating.html), um die
+genaue Bedeutung der einzelnen Code-Teile nachvollziehen zu können.
+
 Im `src/`-Verzeichnis wird in der Datei `employees.js` die Logik zu Rendern des
 Templates angelegt. Hierbei handelt es sich um eine ausführbare
 Express.js-Anwendung:
@@ -209,7 +215,7 @@ app.get('/', (req, res) => {
     const data = {
         company: 'Frickelbude',
         employees: employees
-    }
+    };
     res.render('employees.html', data);
 });
 
@@ -217,6 +223,13 @@ app.listen(port, () => {
     console.log(`Employees app listening on port ${port}.`);
 });
 ```
+
+Mithilfe von `nunjucks.configure` wird die Templating-Engine mit der
+Express.js-Anwendung verbunden. Templates sollen im Unterverzeichnis `templates`
+gesucht werden. In der Handler-Funktion (`app.get('/', (req, res) ...`) wird
+dann die `render`-Methode verwendet. Dieser kann der relative Dateiname zu
+`templates/` einerseits und das Datenobjekt andererseits mitgegeben werden.
+Lesen Sie den Code und versuchen Sie, ihn zu verstehen.
 
 Die beiden Dateien werden ins Git-Repository übernommen:
 

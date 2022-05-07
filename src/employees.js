@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
     const data = {
         company: 'Frickelbude',
         employees: employees
-    }
+    };
     res.render('employees.html', data);
 });
 
