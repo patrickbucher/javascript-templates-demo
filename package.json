@@ -1,0 +1,20 @@
+{
+  "name": "javascript-templates-demo",
+  "version": "0.0.1",
+  "description": "Demonstration of Mustache templates with Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@code.frickelbude.ch:ipt6/javascript-templates-demo.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "Templates",
+    "Mustache"
+  ],
+  "author": "Patrick Bucher",
+  "license": "MIT"
+}
