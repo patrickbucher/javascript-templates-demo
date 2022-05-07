@@ -16,5 +16,8 @@
     "Mustache"
   ],
   "author": "Patrick Bucher",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "mustache": "^4.2.0"
+  }
 }
